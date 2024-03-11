@@ -1,1 +1,1 @@
-subst o: .\
+subst o: .\..\
