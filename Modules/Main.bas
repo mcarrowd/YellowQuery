@@ -8,8 +8,7 @@ Public Function YQ(Base As String, Query As String, ParamArray Params() As Varia
     On Error GoTo HandleError
     Dim App As Object
     Dim Parameters() As Variant
-    Dim Ret As Object, RetRow As Object, Column As Object, RowNum As Long, ColNum As Long
-    Dim ResultArray() As Variant
+    Dim Ret As Object
     Dim I As Long
     
     Set App = GetAppByRef(Base)
@@ -27,22 +26,13 @@ Public Function YQ(Base As String, Query As String, ParamArray Params() As Varia
         Set Ret = App.YQ_OLEAutomationClient.RunQuery(Query)
     End If
     If Ret.IsArray Then
-        RowNum = 0
-        ReDim ResultArray(Ret.RowCount - 1, Ret.ColumnCount - 1)
-        For Each RetRow In Ret.Value
-            ColNum = 0
-            For Each Column In RetRow
-                ResultArray(RowNum, ColNum) = Column.Value
-                ColNum = ColNum + 1
-            Next
-            RowNum = RowNum + 1
-        Next
-        YQ = ResultArray
+        YQ = Ret.Value
     ElseIf Ret.RowCount > 0 Then
         YQ = Ret.Value
     Else
         YQ = CVErr(xlErrNA)
     End If
+    'Debug.Print "Main.YQ", "Время выполнения запроса, с", Ret.Duration
     Exit Function
 HandleError:
     Debug.Print "Main.YQ", "Исключение", Err.Number, Err.Description
