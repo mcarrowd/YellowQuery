@@ -61,6 +61,8 @@
 		</Properties>
 		<ChildObjects>
 			<Language>Русский</Language>
+			<CommonModule>YQ_OLEAutomationClient</CommonModule>
+			<CommonModule>YQ_OLEAutomationServerCall</CommonModule>
 		</ChildObjects>
 	</Configuration>
 </MetaDataObject>

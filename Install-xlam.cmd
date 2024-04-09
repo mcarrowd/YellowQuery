@@ -1,0 +1,1 @@
+copy .\Build\YellowQuery.xlam %APPDATA%\Microsoft\Addins\
