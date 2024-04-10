@@ -44,8 +44,8 @@
 	Возврат Результат;
 КонецФункции
 
-Функция GetURLProperty(URL, PropertyName) Экспорт
-	Результат = YQ_OLEAutomationServerCall.ПолучитьРеквизитСсылкиПоURL(URL, PropertyName);
+Функция GetURLAttribute(URL, AttributeName) Экспорт
+	Результат = YQ_OLEAutomationServerCall.ПолучитьРеквизитСсылкиПоURL(URL, AttributeName);
 	Возврат Результат;
 КонецФункции
 

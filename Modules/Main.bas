@@ -4,7 +4,9 @@ Option Explicit
 Dim AppDict As Object
 Dim ObjPropDict As Object
 
-Public Function YQ(Base As String, Query As String, ParamArray Params() As Variant) As Variant
+Public Function YQ(Base As String, QueryText As String, ParamArray Params() As Variant) As Variant
+Attribute YQ.VB_Description = "Возвращает результат выполнения запроса на языке 1С"
+Attribute YQ.VB_ProcData.VB_Invoke_Func = " \n14"
     On Error GoTo HandleError
     Dim App As Object
     Dim Parameters() As Variant
@@ -21,9 +23,9 @@ Public Function YQ(Base As String, Query As String, ParamArray Params() As Varia
                 Parameters(I) = Params(I)
             End If
         Next I
-        Set Ret = App.YQ_OLEAutomationClient.RunQuery(Query, Parameters)
+        Set Ret = App.YQ_OLEAutomationClient.RunQuery(QueryText, Parameters)
     Else
-        Set Ret = App.YQ_OLEAutomationClient.RunQuery(Query)
+        Set Ret = App.YQ_OLEAutomationClient.RunQuery(QueryText)
     End If
     If Ret.IsArray Then
         YQ = Ret.Value
@@ -39,15 +41,17 @@ HandleError:
     YQ = CVErr(xlErrValue)
 End Function
 
-Public Function ПРЕДСТАВЛЕНИЕССЫЛКИ(Rng As Variant) As Variant
+Public Function REFP(Reference As Variant) As Variant
+Attribute REFP.VB_Description = "Получает представление ссылки"
+Attribute REFP.VB_ProcData.VB_Invoke_Func = " \n14"
     On Error GoTo HandleError
     Dim Result As Variant
     Dim App As Object, Ref As String, DictKey As String
     
-    If TypeName(Rng) = "Range" Then
-        Ref = FindRefInRange(Rng)
+    If TypeName(Reference) = "Range" Then
+        Ref = FindRefInRange(Reference)
     Else
-        Ref = Rng
+        Ref = Reference
     End If
     If Ref = "" Then
         Result = CVErr(xlErrValue)
@@ -64,27 +68,29 @@ Public Function ПРЕДСТАВЛЕНИЕССЫЛКИ(Rng As Variant) As Variant
             ObjPropDict.Add DictKey, Result
         End If
     End If
-    ПРЕДСТАВЛЕНИЕССЫЛКИ = Result
+    REFP = Result
     Exit Function
 HandleError:
-    Debug.Print "Main.ПРЕДСТАВЛЕНИЕССЫЛКИ", "Исключение", Err.Number, Err.Description
-    ПРЕДСТАВЛЕНИЕССЫЛКИ = CVErr(xlErrValue)
+    Debug.Print "Main.REFP", "Исключение", Err.Number, Err.Description
+    REFP = CVErr(xlErrValue)
 End Function
 
-Public Function РЕКВИЗИТССЫЛКИ(Rng As Range, PropertyName As String) As Variant
+Public Function REFA(Reference As Variant, AttributeName As String) As Variant
+Attribute REFA.VB_Description = "Получает значение реквизита ссылки"
+Attribute REFA.VB_ProcData.VB_Invoke_Func = " \n14"
     On Error GoTo HandleError
     Dim Result As Variant
     Dim App As Object, DictKey As String
     Dim Ref As String
     
-    If PropertyName = "" Then
+    If AttributeName = "" Then
         Result = CVErr(xlErrValue)
         Exit Function
     End If
-    If TypeName(Rng) = "Range" Then
-        Ref = FindRefInRange(Rng)
+    If TypeName(Reference) = "Range" Then
+        Ref = FindRefInRange(Reference)
     Else
-        Ref = Rng
+        Ref = Reference
     End If
     If Ref = "" Then
         Result = CVErr(xlErrValue)
@@ -92,20 +98,20 @@ Public Function РЕКВИЗИТССЫЛКИ(Rng As Range, PropertyName As String) As Variant
         If ObjPropDict Is Nothing Then
             Set ObjPropDict = CreateObject("Scripting.Dictionary")
         End If
-        DictKey = Ref + "." + PropertyName
+        DictKey = Ref + "." + AttributeName
         If ObjPropDict.exists(DictKey) Then
             Result = ObjPropDict(DictKey)
         Else
             Set App = GetAppByRef(Ref)
-            Result = App.YQ_OLEAutomationClient.GetURLProperty(Ref, PropertyName)
+            Result = App.YQ_OLEAutomationClient.GetURLAttribute(Ref, AttributeName)
             ObjPropDict.Add DictKey, Result
         End If
     End If
-    РЕКВИЗИТССЫЛКИ = Result
+    REFA = Result
     Exit Function
 HandleError:
-    Debug.Print "Main.РЕКВИЗИТССЫЛКИ", "Исключение", Err.Number, Err.Description
-    РЕКВИЗИТССЫЛКИ = CVErr(xlErrValue)
+    Debug.Print "Main.REFA", "Исключение", Err.Number, Err.Description
+    REFA = CVErr(xlErrValue)
 End Function
 
 Private Function FindRefInRange(Rng As Variant) As String
@@ -233,3 +239,16 @@ Private Function GetApp(ConStr As String) As Object
 HandleError:
     Debug.Print "Main.GetApp", "Исключение", Err.Number, Err.Description
 End Function
+
+Public Sub RegisterYQFunctions()
+    Dim YQArgs(1 To 3) As Variant, REFPArgs(1 To 1) As Variant, REFAArgs(1 To 2) As Variant
+    YQArgs(1) = "Навигационная ссылка информационной базы 1С, к которой выполняется запрос"
+    YQArgs(2) = "Текст запроса на языке 1С"
+    YQArgs(3) = "Произвольное число параметров запроса. Параметры задаются парами имя;значение"
+    Application.MacroOptions Macro:="YQ", Description:="Возвращает результат выполнения запроса на языке 1С", ArgumentDescriptions:=YQArgs
+    REFPArgs(1) = "Внешняя навигационная ссылка объекта, для которого требуется получить представление"
+    Application.MacroOptions Macro:="REFP", Description:="Получает представление ссылки", ArgumentDescriptions:=REFPArgs
+    REFAArgs(1) = "Внешняя навигационная ссылка объекта, значение реквизита которого требуется получить"
+    REFAArgs(2) = "Имя реквизита объекта, значение которого требуется получить"
+    Application.MacroOptions Macro:="REFA", Description:="Получает значение реквизита ссылки", ArgumentDescriptions:=REFAArgs
+End Sub
