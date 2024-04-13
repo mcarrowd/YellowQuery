@@ -5,7 +5,7 @@ Dim AppDict As Object
 Dim ObjPropDict As Object
 
 Public Function YQ(Base As String, QueryText As String, ParamArray Params() As Variant) As Variant
-Attribute YQ.VB_Description = "Возвращает результат выполнения запроса на языке 1С"
+Attribute YQ.VB_Description = "Р’РѕР·РІСЂР°С‰Р°РµС‚ СЂРµР·СѓР»СЊС‚Р°С‚ РІС‹РїРѕР»РЅРµРЅРёСЏ Р·Р°РїСЂРѕСЃР° РЅР° СЏР·С‹РєРµ 1РЎ"
 Attribute YQ.VB_ProcData.VB_Invoke_Func = " \n14"
     On Error GoTo HandleError
     Dim App As Object
@@ -34,15 +34,15 @@ Attribute YQ.VB_ProcData.VB_Invoke_Func = " \n14"
     Else
         YQ = CVErr(xlErrNA)
     End If
-    'Debug.Print "Main.YQ", "Время выполнения запроса, с", Ret.Duration
+    'Debug.Print "Main.YQ", "Р’СЂРµРјСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ Р·Р°РїСЂРѕСЃР°, СЃ", Ret.Duration
     Exit Function
 HandleError:
-    Debug.Print "Main.YQ", "Исключение", Err.Number, Err.Description
+    Debug.Print "Main.YQ", "РСЃРєР»СЋС‡РµРЅРёРµ", Err.Number, Err.Description
     YQ = CVErr(xlErrValue)
 End Function
 
 Public Function REFP(Reference As Variant) As Variant
-Attribute REFP.VB_Description = "Получает представление ссылки"
+Attribute REFP.VB_Description = "РџРѕР»СѓС‡Р°РµС‚ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ СЃСЃС‹Р»РєРё"
 Attribute REFP.VB_ProcData.VB_Invoke_Func = " \n14"
     On Error GoTo HandleError
     Dim Result As Variant
@@ -71,12 +71,12 @@ Attribute REFP.VB_ProcData.VB_Invoke_Func = " \n14"
     REFP = Result
     Exit Function
 HandleError:
-    Debug.Print "Main.REFP", "Исключение", Err.Number, Err.Description
+    Debug.Print "Main.REFP", "РСЃРєР»СЋС‡РµРЅРёРµ", Err.Number, Err.Description
     REFP = CVErr(xlErrValue)
 End Function
 
 Public Function REFA(Reference As Variant, AttributeName As String) As Variant
-Attribute REFA.VB_Description = "Получает значение реквизита ссылки"
+Attribute REFA.VB_Description = "РџРѕР»СѓС‡Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ СЂРµРєРІРёР·РёС‚Р° СЃСЃС‹Р»РєРё"
 Attribute REFA.VB_ProcData.VB_Invoke_Func = " \n14"
     On Error GoTo HandleError
     Dim Result As Variant
@@ -110,7 +110,7 @@ Attribute REFA.VB_ProcData.VB_Invoke_Func = " \n14"
     REFA = Result
     Exit Function
 HandleError:
-    Debug.Print "Main.REFA", "Исключение", Err.Number, Err.Description
+    Debug.Print "Main.REFA", "РСЃРєР»СЋС‡РµРЅРёРµ", Err.Number, Err.Description
     REFA = CVErr(xlErrValue)
 End Function
 
@@ -231,24 +231,24 @@ Private Function GetApp(ConStr As String) As Object
     If App Is Nothing Then
         Set App = CreateObject("V83C.Application")
         Ret = App.Connect(ConStr)
-        Debug.Print "Main.GetApp", "Подключение", ConStr, Ret
+        Debug.Print "Main.GetApp", "РџРѕРґРєР»СЋС‡РµРЅРёРµ", ConStr, Ret
         AppDict.Add ConStr, App
     End If
     Set GetApp = App
     Exit Function
 HandleError:
-    Debug.Print "Main.GetApp", "Исключение", Err.Number, Err.Description
+    Debug.Print "Main.GetApp", "РСЃРєР»СЋС‡РµРЅРёРµ", Err.Number, Err.Description
 End Function
 
 Public Sub RegisterYQFunctions()
     Dim YQArgs(1 To 3) As Variant, REFPArgs(1 To 1) As Variant, REFAArgs(1 To 2) As Variant
-    YQArgs(1) = "Навигационная ссылка информационной базы 1С, к которой выполняется запрос"
-    YQArgs(2) = "Текст запроса на языке 1С"
-    YQArgs(3) = "Произвольное число параметров запроса. Параметры задаются парами имя;значение"
-    Application.MacroOptions Macro:="YQ", Description:="Возвращает результат выполнения запроса на языке 1С", ArgumentDescriptions:=YQArgs
-    REFPArgs(1) = "Внешняя навигационная ссылка объекта, для которого требуется получить представление"
-    Application.MacroOptions Macro:="REFP", Description:="Получает представление ссылки", ArgumentDescriptions:=REFPArgs
-    REFAArgs(1) = "Внешняя навигационная ссылка объекта, значение реквизита которого требуется получить"
-    REFAArgs(2) = "Имя реквизита объекта, значение которого требуется получить"
-    Application.MacroOptions Macro:="REFA", Description:="Получает значение реквизита ссылки", ArgumentDescriptions:=REFAArgs
+    YQArgs(1) = "РќР°РІРёРіР°С†РёРѕРЅРЅР°СЏ СЃСЃС‹Р»РєР° РёРЅС„РѕСЂРјР°С†РёРѕРЅРЅРѕР№ Р±Р°Р·С‹ 1РЎ, Рє РєРѕС‚РѕСЂРѕР№ РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ Р·Р°РїСЂРѕСЃ"
+    YQArgs(2) = "РўРµРєСЃС‚ Р·Р°РїСЂРѕСЃР° РЅР° СЏР·С‹РєРµ 1РЎ"
+    YQArgs(3) = "РџСЂРѕРёР·РІРѕР»СЊРЅРѕРµ С‡РёСЃР»Рѕ РїР°СЂР°РјРµС‚СЂРѕРІ Р·Р°РїСЂРѕСЃР°. РџР°СЂР°РјРµС‚СЂС‹ Р·Р°РґР°СЋС‚СЃСЏ РїР°СЂР°РјРё РёРјСЏ;Р·РЅР°С‡РµРЅРёРµ"
+    Application.MacroOptions Macro:="YQ", Description:="Р’РѕР·РІСЂР°С‰Р°РµС‚ СЂРµР·СѓР»СЊС‚Р°С‚ РІС‹РїРѕР»РЅРµРЅРёСЏ Р·Р°РїСЂРѕСЃР° РЅР° СЏР·С‹РєРµ 1РЎ", ArgumentDescriptions:=YQArgs
+    REFPArgs(1) = "Р’РЅРµС€РЅСЏСЏ РЅР°РІРёРіР°С†РёРѕРЅРЅР°СЏ СЃСЃС‹Р»РєР° РѕР±СЉРµРєС‚Р°, РґР»СЏ РєРѕС‚РѕСЂРѕРіРѕ С‚СЂРµР±СѓРµС‚СЃСЏ РїРѕР»СѓС‡РёС‚СЊ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ"
+    Application.MacroOptions Macro:="REFP", Description:="РџРѕР»СѓС‡Р°РµС‚ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ СЃСЃС‹Р»РєРё", ArgumentDescriptions:=REFPArgs
+    REFAArgs(1) = "Р’РЅРµС€РЅСЏСЏ РЅР°РІРёРіР°С†РёРѕРЅРЅР°СЏ СЃСЃС‹Р»РєР° РѕР±СЉРµРєС‚Р°, Р·РЅР°С‡РµРЅРёРµ СЂРµРєРІРёР·РёС‚Р° РєРѕС‚РѕСЂРѕРіРѕ С‚СЂРµР±СѓРµС‚СЃСЏ РїРѕР»СѓС‡РёС‚СЊ"
+    REFAArgs(2) = "РРјСЏ СЂРµРєРІРёР·РёС‚Р° РѕР±СЉРµРєС‚Р°, Р·РЅР°С‡РµРЅРёРµ РєРѕС‚РѕСЂРѕРіРѕ С‚СЂРµР±СѓРµС‚СЃСЏ РїРѕР»СѓС‡РёС‚СЊ"
+    Application.MacroOptions Macro:="REFA", Description:="РџРѕР»СѓС‡Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ СЂРµРєРІРёР·РёС‚Р° СЃСЃС‹Р»РєРё", ArgumentDescriptions:=REFAArgs
 End Sub
