@@ -17,7 +17,7 @@ objExcel.VBE.ActiveVBProject.VBComponents.Import BasPath
 objExcel.Application.Run "Main.RegisterYQFunctions"
 objWorkbook.BuiltinDocumentProperties("Author") = "Dmitry Makarov"
 objWorkbook.BuiltinDocumentProperties("Title") = "YellowQuery"
-objWorkbook.BuiltinDocumentProperties("Comments") = "Позволяет писать формулы в Excel для получения данных из 1С (v0.2.0)"
+objWorkbook.BuiltinDocumentProperties("Comments") = "Позволяет писать формулы в Excel для получения данных из 1С (v0.3.0)"
 objWorkbook.SaveAs BuildPath, xlOpenXMLAddIn
 objWorkbook.Close False
 objExcel.Quit
