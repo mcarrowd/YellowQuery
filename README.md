@@ -2,7 +2,7 @@
 
 YellowQuery позволяет писать формулы в Excel для получения данных из 1С. Поддерживается встроенный язык запросов 1С:Предприятие 8.
 
-<img src="https://github.com/mcarrowd/YellowQuery/assets/4023864/8355f839-bec8-49e3-be15-c1978895e472 " data-canonical-src="https://github.com/mcarrowd/YellowQuery/4023864/8355f839-bec8-49e3-be15-c1978895e472 " width="600" height="300" />
+![YQ demo](https://github.com/mcarrowd/YellowQuery/assets/4023864/1d21a032-c1cf-4df0-be44-a62f5d505f7e)
 
 ### Идея
 
